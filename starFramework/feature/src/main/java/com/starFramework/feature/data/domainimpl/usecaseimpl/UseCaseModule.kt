@@ -1,6 +1,5 @@
 package com.starFramework.feature.data.domainimpl.usecaseimpl
 
-import com.starFramework.feature.core.IODispatcher
 import com.starFramework.feature.data.persistance.datastore.StarDataStore
 import com.starFramework.feature.domain.usecase.StarUseCase
 import dagger.Module
@@ -24,9 +23,8 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideStarSaveUseCase(
-        dataSource: StarDataStore,
-        @IODispatcher dispatcher: CoroutineContext
+        dataSource: StarDataStore
     ): StarUseCase {
-        return StarUseCaseImpl(dataSource, dispatcher)
+        return StarUseCaseImpl(dataSource)
     }
 }

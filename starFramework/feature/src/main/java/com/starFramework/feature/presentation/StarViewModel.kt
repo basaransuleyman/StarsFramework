@@ -34,9 +34,7 @@ class StarViewModel @Inject constructor(private val starUseCase: StarUseCase) :
         if (updatedStars.size < 10) {
             updatedStars.add(star)
             _stars.value = updatedStars
-            viewModelScope.launch {
-                starUseCase.saveStars(updatedStars)
-            }
+            saveStars()
         } else {
             _isSkyFull.value = true
         }
@@ -46,9 +44,7 @@ class StarViewModel @Inject constructor(private val starUseCase: StarUseCase) :
     fun resetSky() {
         _stars.value = emptyList()
         _isSkyFull.value = false
-        viewModelScope.launch {
-            starUseCase.saveStars(emptyList())
-        }
+        saveStars()
         printStars()
     }
 
@@ -58,8 +54,7 @@ class StarViewModel @Inject constructor(private val starUseCase: StarUseCase) :
         println("Number of 'Bright' stars: $brightStarsCount")
     }
 
-    override fun onCleared() {
-        super.onCleared()
+    fun saveStars() {
         viewModelScope.launch {
             starUseCase.saveStars(_stars.value)
         }

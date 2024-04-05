@@ -51,7 +51,7 @@ fun MainScreen() {
                     loadUrl(LOAD_WEB_URL)
                 }
             },
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(0.5f)
         )
 
         Text(

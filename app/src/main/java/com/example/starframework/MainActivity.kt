@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -14,6 +15,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.starframework.ui.theme.StarFrameworkTheme
 import com.starFramework.feature.presentation.MainScreen
+import com.starFramework.feature.presentation.StarViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
@@ -21,7 +23,7 @@ import java.util.concurrent.TimeUnit
 class MainActivity : ComponentActivity() {
 
     private val workManager by lazy { WorkManager.getInstance(this) }
-
+    private val viewModel: StarViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -39,6 +41,11 @@ class MainActivity : ComponentActivity() {
     override fun onStop() {
         super.onStop()
         scheduleNotificationWorker()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.saveStars()
     }
 
     override fun onResume() {

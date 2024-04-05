@@ -8,12 +8,7 @@ import javax.inject.Inject
 
 class StarDataStore @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
-    fun saveAndReturnStars(stars: List<Star>): List<Star> {
-        saveStars(stars)
-        return loadStars()
-    }
-
-    private fun saveStars(stars: List<Star>) {
+    fun saveStars(stars: List<Star>) {
         sharedPreferences.edit().apply {
             val starsJson = Gson().toJson(stars)
             putString("stars", starsJson)
@@ -21,7 +16,7 @@ class StarDataStore @Inject constructor(private val sharedPreferences: SharedPre
         }
     }
 
-    fun loadStars(): List<Star> {
+     fun loadStars(): List<Star> {
         val starsJson = sharedPreferences.getString("stars", null)
         return if (starsJson != null) {
             val type = object : TypeToken<List<Star>>() {}.type
