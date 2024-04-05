@@ -6,8 +6,8 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -16,6 +16,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
@@ -32,6 +34,12 @@ class StarViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        MockitoAnnotations.initMocks(this)
+
+        runBlocking {
+            `when`(starUseCase.loadStars()).thenReturn(emptyList())
+        }
+
         viewModel = StarViewModel(starUseCase)
     }
 
@@ -60,8 +68,6 @@ class StarViewModelTest {
         repeat(11) {
             viewModel.addStar(Star(size = "S", color = "Blue", brightness = "Bright"))
         }
-
-        advanceUntilIdle()
 
         assertTrue(viewModel.isSkyFull.value)
     }
