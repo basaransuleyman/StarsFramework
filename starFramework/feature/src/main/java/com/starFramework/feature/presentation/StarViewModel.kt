@@ -29,6 +29,7 @@ class StarViewModel @Inject constructor(private val starUseCase: StarUseCase) :
         }
     }
 
+    //Add functionality to add a star and update UI state
     fun addStar(star: Star) {
         val updatedStars = _stars.value.toMutableList()
         if (updatedStars.size < 10) {
@@ -41,6 +42,7 @@ class StarViewModel @Inject constructor(private val starUseCase: StarUseCase) :
         printStars()
     }
 
+    //Implement reset functionality to clear stars and reset UI state
     fun resetSky() {
         _stars.value = emptyList()
         _isSkyFull.value = false
@@ -54,12 +56,14 @@ class StarViewModel @Inject constructor(private val starUseCase: StarUseCase) :
         println("Number of 'Bright' stars: $brightStarsCount")
     }
 
+    //Trigger saving of stars to data store from ViewModel
     fun saveStars() {
         viewModelScope.launch {
             starUseCase.saveStars(_stars.value)
         }
     }
 
+    //Enable adding stars through StarFrameworkInterface
     override fun addStarWithInterface(size: String, color: String, brightness: String) {
         val star = Star(size, color, brightness)
         addStar(star)
